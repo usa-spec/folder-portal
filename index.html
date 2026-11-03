@@ -5,42 +5,74 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#123b78">
+  <meta name="description" content="Folder Company Portal - Secure access to your documents and resources.">
   <title>Folder | Company Portal</title>
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+    }
 
     body {
       margin: 0;
       min-height: 100vh;
+      min-height: 100svh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 24px;
-      font-family: Arial, Helvetica, sans-serif;
-      color: white;
-      text-align: center;
-      background:
-        radial-gradient(ellipse at 15% 15%, rgba(95,180,255,.42), transparent 42%),
-        radial-gradient(ellipse at 90% 85%, rgba(0,35,105,.65), transparent 48%),
-        linear-gradient(135deg, #0b2857, #1762a9 55%, #0b3977);
       overflow: hidden;
       position: relative;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #ffffff;
+      text-align: center;
+      background:
+        radial-gradient(
+          ellipse at 15% 15%,
+          rgba(95, 180, 255, 0.42),
+          transparent 42%
+        ),
+        radial-gradient(
+          ellipse at 90% 85%,
+          rgba(0, 35, 105, 0.65),
+          transparent 48%
+        ),
+        linear-gradient(
+          135deg,
+          #0b2857,
+          #1762a9 55%,
+          #0b3977
+        );
     }
 
-    body::before, body::after {
+    body::before,
+    body::after {
       content: "";
       position: fixed;
       left: -15%;
       width: 130%;
       height: 260px;
       border-radius: 50%;
-      border: 1px solid rgba(255,255,255,.15);
-      transform: rotate(-9deg);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       pointer-events: none;
     }
 
-    body::before { bottom: -155px; box-shadow: 0 -18px 0 rgba(255,255,255,.035), 0 -38px 0 rgba(255,255,255,.025); }
-    body::after { top: -205px; transform: rotate(8deg); }
+    body::before {
+      bottom: -155px;
+      transform: rotate(-9deg);
+      box-shadow:
+        0 -18px 0 rgba(255, 255, 255, 0.035),
+        0 -38px 0 rgba(255, 255, 255, 0.025);
+    }
+
+    body::after {
+      top: -205px;
+      transform: rotate(8deg);
+    }
 
     .panel {
       position: relative;
@@ -48,11 +80,12 @@
       width: 100%;
       max-width: 560px;
       padding: 54px 36px 38px;
-      border: 1px solid rgba(255,255,255,.22);
+      border: 1px solid rgba(255, 255, 255, 0.22);
       border-radius: 24px;
-      background: rgba(7, 30, 70, .30);
-      box-shadow: 0 24px 70px rgba(0,0,0,.22);
+      background: rgba(7, 30, 70, 0.30);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .mark {
@@ -62,11 +95,14 @@
       display: grid;
       place-items: center;
       border-radius: 18px;
-      background: rgba(255,255,255,.15);
-      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
     }
 
-    .mark svg { width: 48px; height: 48px; }
+    .mark svg {
+      width: 48px;
+      height: 48px;
+    }
 
     h1 {
       margin: 0;
@@ -97,22 +133,33 @@
       gap: 12px;
       min-width: 210px;
       padding: 15px 24px;
+      border: none;
       border-radius: 10px;
-      background: white;
+      background: #ffffff;
       color: #123d78;
+      font-family: inherit;
       font-size: 15px;
       font-weight: 700;
       text-decoration: none;
-      transition: transform .2s, box-shadow .2s;
+      cursor: pointer;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
     }
 
-    .button:hover {
+    .button:not(:disabled):hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(0,0,0,.2);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
 
-    .button.disabled {
-      opacity: .65;
+    .button:focus-visible {
+      outline: 3px solid #9bd1ff;
+      outline-offset: 4px;
+    }
+
+    .button:disabled {
+      opacity: 0.65;
       cursor: not-allowed;
     }
 
@@ -120,59 +167,126 @@
       margin-top: 38px;
       color: #d6e7ff;
       font-size: 12px;
-      letter-spacing: .3px;
+      letter-spacing: 0.3px;
     }
 
-    footer span { margin-right: 7px; }
+    footer span {
+      margin-right: 7px;
+    }
 
     @media (max-width: 480px) {
-      .panel { padding: 42px 22px 30px; }
+      body {
+        padding: 18px;
+      }
+
+      .panel {
+        padding: 42px 22px 30px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .button {
+        transition: none;
+      }
     }
   </style>
 </head>
+
 <body>
   <main class="panel">
+
     <div class="mark" aria-hidden="true">
       <svg viewBox="0 0 64 64" fill="none">
-        <path d="M8 18a5 5 0 0 1 5-5h15l6 7h17a5 5 0 0 1 5 5v25a5 5 0 0 1-5 5H13a5 5 0 0 1-5-5V18Z"
-          stroke="white" stroke-width="3.5" stroke-linejoin="round"/>
-        <rect x="24" y="31" width="19" height="15" rx="3" stroke="white" stroke-width="3"/>
-        <path d="M29 31v-4a4.5 4.5 0 0 1 9 0v4" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        <path
+          d="M8 18a5 5 0 0 1 5-5h15l6 7h17a5 5 0 0 1 5 5v25a5 5 0 0 1-5 5H13a5 5 0 0 1-5-5V18Z"
+          stroke="white"
+          stroke-width="3.5"
+          stroke-linejoin="round"
+        />
+        <rect
+          x="24"
+          y="31"
+          width="19"
+          height="15"
+          rx="3"
+          stroke="white"
+          stroke-width="3"
+        />
+        <path
+          d="M29 31v-4a4.5 4.5 0 0 1 9 0v4"
+          stroke="white"
+          stroke-width="3"
+          stroke-linecap="round"
+        />
       </svg>
     </div>
 
     <h1>Folder</h1>
+
     <div class="subtitle">Company Portal</div>
+
     <p class="description">
       Secure access to your documents and resources in one convenient place.
     </p>
 
-    <a id="workspaceButton" class="button disabled" href="#" aria-disabled="true">
-      Open Workspace <span aria-hidden="true">↗</span>
-    </a>
+    <button
+      id="workspaceButton"
+      class="button"
+      type="button"
+      disabled
+    >
+      Open Workspace
+      <span aria-hidden="true">↗</span>
+    </button>
 
-    <footer><span aria-hidden="true">♢</span> Secure access folder</footer>
+    <footer>
+      <span aria-hidden="true">♢</span>
+      Secure access folder
+    </footer>
+
   </main>
 
   <script>
-    fetch("./config.json")
-      .then(response => {
-        if (!response.ok) throw new Error("Configuration unavailable");
-        return response.json();
-      })
-      .then(config => {
-        const url = config.destinationUrl;
-        if (typeof url === "string" && /^https:\/\//i.test(url)) {
-          const button = document.getElementById("workspaceButton");
-          button.href = url;
-          button.target = "_blank";
-          button.rel = "noopener noreferrer";
-          button.classList.remove("disabled");
-          button.removeAttribute("aria-disabled");
+    document.addEventListener("DOMContentLoaded", async () => {
+      const button = document.getElementById("workspaceButton");
+
+      try {
+        const response = await fetch("./config.json", {
+          cache: "no-store"
+        });
+
+        if (!response.ok) {
+          throw new Error("Unable to load configuration.");
         }
-      })
-      .catch(error => console.error("Folder configuration:", error));
+
+        const config = await response.json();
+        const destinationUrl = config.destinationUrl;
+
+        if (typeof destinationUrl !== "string") {
+          throw new Error("Destination URL is missing.");
+        }
+
+        const parsedUrl = new URL(destinationUrl);
+
+        if (parsedUrl.protocol !== "https:") {
+          throw new Error("Destination must use HTTPS.");
+        }
+
+        button.disabled = false;
+
+        button.addEventListener("click", () => {
+          window.open(
+            parsedUrl.href,
+            "_blank",
+            "noopener,noreferrer"
+          );
+        });
+
+      } catch (error) {
+        console.error("Folder portal configuration error:", error);
+        button.disabled = true;
+      }
+    });
   </script>
 </body>
 </html>
-
