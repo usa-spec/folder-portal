@@ -1,1 +1,32 @@
+name: Deploy Folder Company Portal
 
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Sign in to Azure
+        uses: azure/login@v2
+        with:
+          client-id: f3a695d8-0c61-4498-bc27-c8d991937793
+          tenant-id: bc6e1ffd-7694-481e-b8a4-af37e4027a0d
+          subscription-id: c6fc1d84-868b-4075-accb-650fc4325251
+
+      - name: Upload website files to Azure Storage
+        run: |
+          az storage blob upload --account-name folderportal2026 --container-name '$web' --name index.html --file index.html --auth-mode login --overwrite true
+          az storage blob upload --account-name folderportal2026 --container-name '$web' --name 404.html --file 404.html --auth-mode login --overwrite true
+          az storage blob upload --account-name folderportal2026 --container-name '$web' --name config.json --file config.json --auth-mode login --overwrite true
