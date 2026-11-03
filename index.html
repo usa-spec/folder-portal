@@ -1,1 +1,178 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#123b78">
+  <title>Folder | Company Portal</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at 15% 15%, rgba(95,180,255,.42), transparent 42%),
+        radial-gradient(ellipse at 90% 85%, rgba(0,35,105,.65), transparent 48%),
+        linear-gradient(135deg, #0b2857, #1762a9 55%, #0b3977);
+      overflow: hidden;
+      position: relative;
+    }
+
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      left: -15%;
+      width: 130%;
+      height: 260px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.15);
+      transform: rotate(-9deg);
+      pointer-events: none;
+    }
+
+    body::before { bottom: -155px; box-shadow: 0 -18px 0 rgba(255,255,255,.035), 0 -38px 0 rgba(255,255,255,.025); }
+    body::after { top: -205px; transform: rotate(8deg); }
+
+    .panel {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 560px;
+      padding: 54px 36px 38px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 24px;
+      background: rgba(7, 30, 70, .30);
+      box-shadow: 0 24px 70px rgba(0,0,0,.22);
+      backdrop-filter: blur(12px);
+    }
+
+    .mark {
+      width: 82px;
+      height: 72px;
+      margin: 0 auto 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25);
+    }
+
+    .mark svg { width: 48px; height: 48px; }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(42px, 8vw, 58px);
+      letter-spacing: -2px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      margin: 10px 0 18px;
+      font-size: 19px;
+      font-weight: 600;
+      color: #d9eaff;
+    }
+
+    .description {
+      max-width: 410px;
+      margin: 0 auto 30px;
+      color: #e4efff;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-width: 210px;
+      padding: 15px 24px;
+      border-radius: 10px;
+      background: white;
+      color: #123d78;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0,0,0,.2);
+    }
+
+    .button.disabled {
+      opacity: .65;
+      cursor: not-allowed;
+    }
+
+    footer {
+      margin-top: 38px;
+      color: #d6e7ff;
+      font-size: 12px;
+      letter-spacing: .3px;
+    }
+
+    footer span { margin-right: 7px; }
+
+    @media (max-width: 480px) {
+      .panel { padding: 42px 22px 30px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="panel">
+    <div class="mark" aria-hidden="true">
+      <svg viewBox="0 0 64 64" fill="none">
+        <path d="M8 18a5 5 0 0 1 5-5h15l6 7h17a5 5 0 0 1 5 5v25a5 5 0 0 1-5 5H13a5 5 0 0 1-5-5V18Z"
+          stroke="white" stroke-width="3.5" stroke-linejoin="round"/>
+        <rect x="24" y="31" width="19" height="15" rx="3" stroke="white" stroke-width="3"/>
+        <path d="M29 31v-4a4.5 4.5 0 0 1 9 0v4" stroke="white" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <h1>Folder</h1>
+    <div class="subtitle">Company Portal</div>
+    <p class="description">
+      Secure access to your documents and resources in one convenient place.
+    </p>
+
+    <a id="workspaceButton" class="button disabled" href="#" aria-disabled="true">
+      Open Workspace <span aria-hidden="true">↗</span>
+    </a>
+
+    <footer><span aria-hidden="true">♢</span> Secure access folder</footer>
+  </main>
+
+  <script>
+    fetch("./config.json")
+      .then(response => {
+        if (!response.ok) throw new Error("Configuration unavailable");
+        return response.json();
+      })
+      .then(config => {
+        const url = config.destinationUrl;
+        if (typeof url === "string" && /^https:\/\//i.test(url)) {
+          const button = document.getElementById("workspaceButton");
+          button.href = url;
+          button.target = "_blank";
+          button.rel = "noopener noreferrer";
+          button.classList.remove("disabled");
+          button.removeAttribute("aria-disabled");
+        }
+      })
+      .catch(error => console.error("Folder configuration:", error));
+  </script>
+</body>
+</html>
+
